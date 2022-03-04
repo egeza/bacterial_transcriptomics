@@ -509,8 +509,9 @@ process '1F_trim_galore' {
 
 process '4A_quantify_reads' {
   label 'high_memory'
-  publishDir "${params.outdir}/salmon", mode: 'copy', overwrite: true
-
+   publishDir "${params.outdir}",
+        mode: params.publish_dir_mode,
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
   input:
     set val(number), file(R1_reads), file(R2_reads) from QuantInput
     set genome_fasta, genome_dict from genome_quant_ch
