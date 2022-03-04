@@ -388,7 +388,7 @@ process '1C_prepare_genome_bwa' {
 
 process '1D_prepare_samples' {
 
-  publishDir "$params.SRAdir", mode: 'copy'
+  publishDir "$params.SRAdir", mode: 'symlink'
 
   input:
       file samples from sample_sheet
@@ -509,9 +509,7 @@ process '1F_trim_galore' {
 
 process '4A_quantify_reads' {
   label 'high_memory'
-   publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), publish_id:'') }
+  publishDir "${params.outdir}/salmon", mode: "symlink", overwrite: true
   input:
     set val(number), file(R1_reads), file(R2_reads) from QuantInput
     set genome_fasta, genome_dict from genome_quant_ch
