@@ -521,7 +521,7 @@ process '4A_quantify_reads' {
   script:
   if( quantification == 'salmon' )
     """
-    salmon index -t $transcripts -i transcripts_index -k 31
+    salmon index -t $transcripts -i transcripts_index --gencode -k 31
     salmon quant \\
         --geneMap $gtf \\
         --threads $task.cpus \\
